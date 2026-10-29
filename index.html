@@ -666,10 +666,6 @@ video {
   top: 1rem;
 }
 
-.isolate {
-  isolation: isolate;
-}
-
 .z-10 {
   z-index: 10;
 }
@@ -1964,28 +1960,45 @@ Error generating stack: `+l.message+`
         @keyframes shake { 0%,100%{ transform: translateX(0)} 25%{transform: translateX(-4px)} 75%{transform: translateX(4px)} }
         .scrollbar-hide::-webkit-scrollbar{ display:none } .scrollbar-hide{ -ms-overflow-style:none; scrollbar-width:none }
         .period-cards-container { overscroll-behavior: auto; }
-        .period-cards-container.flipped { overscroll-behavior: none; touch-action: pan-y; }
+        /* 修復iPhone橫向：保留橫向能力，變窄44vw容得下兩張 */
         @media (max-width: 767px){
-          .timeline-mobile{
+          .period-cards-container{
             display:flex;
+            flex-direction:row;
             overflow-x:auto;
             overflow-y:visible;
             scroll-snap-type:x mandatory;
-            gap:16px;
-            padding:0 5vw 24px 5vw;
+            -webkit-overflow-scrolling:touch;
+            gap:12px;
+            padding:0 16px 20px 16px;
             align-items:flex-start;
+            touch-action: pan-x pan-y;
+            overscroll-behavior-x: contain;
+            overscroll-behavior-y: auto;
           }
-          .timeline-mobile > div{
-            flex:0 0 80vw;
-            scroll-snap-align:center;
-            height:auto;
-            min-height:unset;
-            align-self:flex-start;
+          .timeline-mobile{
+            display:flex;
+            flex-direction:row;
+            overflow-x:auto;
+            overflow-y:visible;
+            scroll-snap-type:x mandatory;
+            -webkit-overflow-scrolling:touch;
+            gap:12px;
+            padding:0 16px 20px 16px;
+            align-items:flex-start;
+            touch-action: pan-x pan-y;
+            overscroll-behavior-x: contain;
           }
-          /* iPhone專用最小改動修復：翻卡背面獨立滾動隔離 */
+          .timeline-mobile > div,
           .flip-card-root{
+            flex:0 0 44vw;
+            min-width:44vw;
+            max-width:44vw;
+            scroll-snap-align:start;
+            scroll-snap-stop:always;
             min-height:420px !important;
             height:auto !important;
+            align-self:flex-start;
           }
           .flip-card-inner{
             min-height:420px !important;
@@ -1996,46 +2009,34 @@ Error generating stack: `+l.message+`
             height:auto;
           }
           .flip-card-back{
-            overflow-y: scroll !important;
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
-            overscroll-behavior-y: contain;
-            touch-action: pan-y;
-            isolation: isolate;
-            max-height: 68vh !important;
-            height: 68vh !important;
-            position: relative;
-            z-index: 5;
-            padding-bottom: 32px !important;
-            min-height: 420px !important;
+            overflow-y:auto !important;
+            -webkit-overflow-scrolling:touch;
+            overscroll-behavior-y:contain;
+            touch-action:pan-y;
+            isolation:isolate;
+            max-height:62vh !important;
+            height:auto !important;
+            min-height:280px !important;
+            position:relative;
+            z-index:5;
+            padding-bottom:32px !important;
           }
-          .flip-card-back::-webkit-scrollbar{
-            width:6px;
-          }
-          .flip-card-back::-webkit-scrollbar-thumb{
-            background:rgba(0,0,0,0.12);
-            border-radius:999px;
-          }
-          .flip-card-back::-webkit-scrollbar-track{
-            background:transparent;
-          }
-          .period-cards-container.flipped{
-            overscroll-behavior: none;
-            touch-action: pan-y;
-          }
+          .flip-card-back::-webkit-scrollbar{ width:6px; }
+          .flip-card-back::-webkit-scrollbar-thumb{ background:rgba(0,0,0,0.12); border-radius:999px; }
+          .flip-card-back::-webkit-scrollbar-track{ background:transparent; }
           .quiz-options{
-            touch-action: pan-y;
-            pointer-events: auto;
-            padding-bottom: 24px !important;
+            touch-action:pan-y;
+            pointer-events:auto;
+            padding-bottom:24px !important;
             margin-top:12px !important;
             gap:10px !important;
           }
           .quiz-options button{
             min-height:48px !important;
-            pointer-events: auto;
-            touch-action: pan-y;
+            pointer-events:auto;
+            touch-action:pan-y;
           }
-          .quiz-options-wrap{ touch-action: pan-y; pointer-events: auto; }
+          .quiz-options-wrap{ touch-action:pan-y; pointer-events:auto; }
         }
         @keyframes pulsePlay { 0%,100%{ transform: scale(1)} 50%{ transform: scale(1.06)} }
       `}),x("div",{className:"max-w-[1280px] mx-auto px-4 md:px-6 pb-10",children:[x("header",{className:"sticky top-0 z-30 -mx-4 md:-mx-6 px-4 md:px-6 py-4 bg-[rgba(255,249,230,0.92)] backdrop-blur-xl border-b border-white/70",style:{top:"var(--safe-area-inset-top)"},children:[x("div",{className:"flex items-center justify-between gap-3",children:[x("div",{className:"flex items-center gap-3.5",children:[p("div",{className:"w-12 h-12 md:w-14 md:h-14 rounded-full bg-white shadow-[0_4px_16px_rgba(0,0,0,0.08)] flex items-center justify-center text-[26px] md:text-[30px] shrink-0",children:"\uD83D\uDC3C"}),x("div",{className:"flex flex-col",children:[p("div",{className:"font-black leading-[1.1] tracking-tight text-[#222]",style:{fontSize:"clamp(22px, 4vw, 32px)"},children:"穿越時空學歷史"}),p("div",{className:"mt-1 text-[#777] font-bold leading-none",style:{fontSize:"clamp(12px, 2vw, 14px)"},children:"輕鬆學5000年中國歷史 · 廣東話自動朗讀"})]})]}),p("div",{className:"flex items-center",children:x("div",{className:"flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-br from-[#FFF7CC] to-[#FFE08A] shadow-[0_2px_10px_rgba(255,204,51,0.3)] border border-[#FFD84D]/40 text-[13px] font-black text-[#5a3e00]",children:[p("span",{className:"animate-pulse",children:"✨"})," 已記住 ",w,"/48"]})})]}),p("div",{className:"mt-3.5 h-2.5 rounded-full bg-white shadow-inner overflow-hidden",children:p("div",{className:"h-full rounded-full transition-all duration-700",style:{width:`${w/48*100}%`,background:`linear-gradient(90deg, ${d.color}, #ffcc33)`}})}),x("div",{className:"md:hidden mt-2.5 flex items-center gap-1.5 text-[12px] font-black text-[#5a3e00] px-3.5 py-1.5 rounded-full bg-[#FFF7CC] border border-[#FFE08A] w-fit",children:[p("span",{children:"✨"})," 已記住 ",w,"/48 張 · 熊貓博士同你一齊加油！"]})]}),x("div",{className:"mt-4 rounded-[24px] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-4 flex flex-col md:flex-row items-start md:items-center gap-4 relative overflow-hidden",children:[f&&p("div",{className:"absolute inset-0 pointer-events-none overflow-hidden",children:[...Array(20)].map((N,T)=>p("span",{className:"absolute animate-bounce text-xl",style:{left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animationDelay:`${Math.random()*0.5}s`},children:["\uD83C\uDF89","\uD83C\uDF1F","\uD83D\uDC9B","\uD83D\uDC3C"][Math.floor(Math.random()*4)]},T))}),x("div",{className:"flex items-center gap-3",children:[p("div",{className:"w-14 h-14 rounded-full bg-[#fff7cc] flex items-center justify-center text-3xl shadow",children:"\uD83D\uDC3C"}),x("div",{children:[p("div",{className:"font-black text-[14px]",children:"熊貓博士話："}),p("div",{className:"text-[13px] text-[#555] font-bold max-w-[42ch]",children:w===0?"未開始唔緊要，揀一個你鍾意嘅時代，翻開第一張卡啦！\uD83D\uDC3E":w<10?`叻仔！已經記住 ${w} 張，繼續闖關收集勳章啦！\uD83D\uDCAA`:w<30?`哇！${w} 張喇！你係歷史小達人喇！\uD83C\uDFC5`:"太犀利喇！就快集齊所有勳章，衝向未來科技時代啦！\uD83D\uDE80"})]})]}),x("div",{className:"flex-1 w-full",children:[x("div",{className:"flex items-center gap-2 flex-wrap",children:[Ft.map((N,T)=>p("div",{className:`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-black border-2 transition-all ${H[T]?"bg-[#ffcc33] border-[#ffcc33] text-[#5a3e00] shadow scale-110":"bg-white border-[#eee] text-[#ccc]"}`,title:N.name,children:T+1},N.id)),x("span",{className:"text-[11px] font-bold text-[#888] ml-2",children:["8枚時代勳章 · ",H.filter(Boolean).length,"/8 亮起"]})]}),x("div",{className:"mt-2 flex gap-1.5",children:[[...Array(6)].map((N,T)=>{let _=v.filter((ye)=>n.has(ye.id)).length>T;return p("div",{className:`h-2 flex-1 rounded-full ${_?"bg-[#7ddf64]":"bg-[#f0f0f0]"}`},T)}),x("span",{className:"text-[11px] font-black text-[#666] ml-2",children:[v.filter((N)=>n.has(N.id)).length,"/6 本期進度"]})]})]})]}),p("div",{className:"mt-5 overflow-x-auto scrollbar-hide flex gap-3 pb-2",children:Ft.map((N)=>p("button",{onClick:()=>dc(N.id),className:`shrink-0 rounded-[20px] px-4 py-3 min-h-[44px] text-left border-2 transition-all ${e===N.id?"bg-white shadow-[0_8px_20px_rgba(0,0,0,0.08)] scale-[1.02]":"bg-white/60 hover:bg-white"}`,style:{borderColor:e===N.id?N.color:"#fff"},children:x("div",{className:"flex items-center gap-2",children:[p("div",{className:"w-10 h-10 rounded-full overflow-hidden shrink-0",children:p("img",{src:N.img,alt:N.name,className:"w-full h-full object-cover"})}),x("div",{children:[p("div",{className:"font-black text-[13px] leading-tight",children:N.name}),p("div",{className:"text-[10px] text-[#888] font-bold",children:N.time})]}),H[N.id-1]&&p("span",{className:"ml-1",children:"\uD83C\uDFC5"})]})},N.id))}),x("div",{className:"mt-4 grid gap-5",children:[x("div",{className:"rounded-[24px] bg-black shadow-[0_12px_36px_rgba(0,0,0,0.18)] overflow-hidden border border-white/10",style:{background:"#000",borderRadius:"24px",overflow:"hidden"},children:[x("div",{className:"w-full relative bg-black overflow-hidden",style:{position:"relative",background:"#000",borderRadius:"24px",aspectRatio:"16 / 9",overflow:"hidden"},children:[x("div",{id:`cover-${d.id}`,style:{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:20,backgroundImage:`url(${d.img})`,backgroundSize:"cover",backgroundPosition:"center",display:Fu?"none":"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",pointerEvents:Fu?"none":"auto",cursor:"pointer"},onClick:()=>ao(),children:[p("div",{style:{position:"absolute",inset:0,background:"linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.2) 100%)",zIndex:1}}),p("div",{style:{position:"absolute",top:14,left:14,zIndex:3,display:"flex",gap:8,pointerEvents:"none"},children:x("div",{className:"px-3.5 py-1.5 rounded-full text-[12px] font-black shadow border border-white/20 flex items-center gap-1.5",style:{background:"linear-gradient(135deg, #FFD84D 0%, #FFB347 100%)",color:"#5a3e00"},children:[p("span",{className:"text-[10px]",children:"✨"})," 第",String(e).padStart(2,"0"),"篇·",d.name]})}),x("div",{style:{position:"relative",zIndex:3,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",pointerEvents:"auto"},children:[p("div",{style:{width:80,height:80,background:"rgba(255,255,255,0.95)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:32,cursor:"pointer",boxShadow:"0 8px 28px rgba(0,0,0,0.35)",pointerEvents:"auto",animation:"pulsePlay 1.6s ease-in-out infinite"},children:"▶️"}),p("div",{className:"mt-3 px-5 py-1.5 rounded-full bg-white/95 text-[#222] text-[13px] font-black shadow",style:{pointerEvents:"auto"},children:"點擊在框內播放"}),x("div",{className:"mt-2 text-white text-[12px] font-bold drop-shadow",style:{pointerEvents:"none"},children:[d.name," · ",d.subtitle]})]})]}),x("div",{id:`player-${d.id}`,style:{position:"absolute",top:0,left:0,width:"100%",height:"100%",zIndex:10,display:Fu?"block":"none",background:"#000"},children:[p("iframe",{src:ac||void 0,title:`${d.name} 動畫`,style:{width:"100%",height:"100%",border:0,display:"block"},allow:"autoplay; encrypted-media; fullscreen",allowFullScreen:!0}),p("button",{onClick:(N)=>{N.stopPropagation(),pc()},style:{position:"absolute",top:12,left:12,zIndex:30,background:"rgba(0,0,0,0.65)",color:"white",border:"1px solid rgba(255,255,255,0.2)",padding:"8px 14px",borderRadius:999,fontWeight:800,fontSize:12,cursor:"pointer",pointerEvents:"auto",minHeight:36},children:"← 返回封面"})]})]}),p("div",{className:"bg-[#101010] p-3",style:{background:"#101010"},children:p("div",{className:"flex gap-2 overflow-x-auto scrollbar-hide",style:{pointerEvents:"auto"},children:cc.map((N)=>x("button",{onClick:(T)=>{T.stopPropagation(),yc(N)},className:"shrink-0 min-h-[36px] px-3.5 rounded-full bg-white/10 border border-white/20 text-white text-[11px] font-bold hover:bg-white/20 hover:border-white/30 transition-colors flex items-center gap-1",style:{pointerEvents:"auto",cursor:"pointer"},children:[p("span",{children:"⏩"})," ",N.label," · ",N.time]},N.label))})})]}),x("div",{ref:y,className:"rounded-[24px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] bg-white grid md:grid-cols-[1.2fr_0.8fr]",children:[x("div",{className:"relative",style:{height:"clamp(220px, 32vw, 380px)",backgroundImage:`url(${d.img})`,backgroundSize:"cover",backgroundPosition:"center"},children:[p("div",{className:"absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"}),x("div",{className:"absolute bottom-4 left-4 right-4 text-white",children:[p("div",{className:"inline-flex px-3 py-1 rounded-full bg-white/20 backdrop-blur text-[11px] font-black border border-white/30",children:d.time}),p("h2",{className:"font-black mt-2 leading-none",style:{fontSize:"clamp(22px,4vw,36px)"},children:d.name}),p("div",{className:"text-[clamp(12px,1.6vw,15px)] font-bold opacity-90 mt-1",children:d.subtitle})]}),p("div",{className:"absolute top-4 right-4 w-[60px] h-[60px] rounded-full border-4 border-white overflow-hidden shadow-xl",style:{backgroundImage:`url(${d.img})`,backgroundSize:"cover",backgroundPosition:"center"}}),x("div",{className:"absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#ffcc33]/90 text-[#5a3e00] text-[10px] font-black shadow",children:["篆書印章 · ",d.name," · 歷史感紋樣"]})]}),x("div",{className:"p-5 flex flex-col justify-center",children:[p("div",{className:"text-[12px] font-black px-3 py-1 rounded-full w-fit",style:{background:`${d.color}18`,color:d.color},children:"✨ 本期學習重點"}),p("p",{className:"mt-3 text-[14px] leading-7 font-bold text-[#444]",children:d.desc}),x("div",{className:"mt-4 grid grid-cols-3 gap-2",children:[x("div",{className:"rounded-[16px] bg-[#fff9e6] p-3 text-center",children:[p("div",{className:"text-[20px]",children:"\uD83D\uDDFA️"}),p("div",{className:"text-[11px] font-black mt-1",children:"6張翻卡"})]}),x("div",{className:"rounded-[16px] bg-[#f0f9ff] p-3 text-center",children:[p("div",{className:"text-[20px]",children:"\uD83D\uDDE3️"}),p("div",{className:"text-[11px] font-black mt-1",children:"廣東話朗讀"})]}),x("div",{className:"rounded-[16px] bg-[#fff0f5] p-3 text-center",children:[p("div",{className:"text-[20px]",children:"\uD83E\uDDE9"}),p("div",{className:"text-[11px] font-black mt-1",children:"選擇題闖關"})]})]})]})]})]}),x("div",{className:"mt-6 grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6 items-start",children:[p("div",{className:"lg:sticky lg:top-[84px] space-y-4",children:x("div",{className:"rounded-[24px] bg-white shadow-[0_8px_30px_rgba(0,0,0,0.08)] p-5",children:[x("div",{className:"font-black text-[16px] flex items-center gap-2",children:[p("span",{className:"w-2 h-6 rounded-full",style:{background:d.color}}),d.name," 小百科"]}),x("div",{className:"mt-3 space-y-3 text-[13px] leading-6 font-bold text-[#555]",children:[x("p",{children:["\uD83D\uDCA1 ",p("b",{children:"兒童友好版："}),"唔用難詞，用 emoji 標籤帶你玩，例如「",v[0]?.think,"」「",v[1]?.think,"」咁樣記，超可愛！"]}),p("p",{children:"\uD83C\uDFA7 翻到背面會自動用廣東話講一次，記得開聲聽熊貓博士講古仔！"}),p("p",{children:"\uD83C\uDFC5 答對自動記住！唔使再按「我記住喇」，集齊6張就自動過關點亮時代勳章！"})]}),x("div",{className:"mt-4 rounded-[16px] p-3 flex items-center gap-3",style:{background:`${d.color}14`},children:[p("div",{className:"w-16 h-16 rounded-[12px] shrink-0",style:{backgroundImage:`url(${d.img})`,backgroundSize:"cover",backgroundPosition:"center"}}),x("div",{className:"text-[12px] font-bold text-[#555]",children:["圖片嚴格對應：",v.map((N)=>N.ill).slice(0,3).join("、"),"等，保證唔會亂配圖。"]})]})]})}),x("div",{children:[x("div",{className:"flex items-center justify-between mb-3",children:[x("div",{className:"font-black text-[15px]",children:["\uD83D\uDCDA 本期 ",v.length," 張翻卡 · 滑動/點擊翻開"]}),x("div",{className:"text-[11px] font-black text-[#888]",children:["已記住 ",v.filter((N)=>n.has(N.id)).length,"/",v.length]})]}),p("div",{className:`hidden md:grid md:grid-cols-2 gap-5 period-cards-container ${R?"flipped":""}`,children:v.map((N)=>p(ic,{card:N,period:d,quizData:h[N.id],isRemembered:n.has(N.id),quizPassed:u.has(N.id),onQuizPass:co,onFlipChange:q},N.id))}),p("div",{className:`md:hidden timeline-mobile period-cards-container ${R?"flipped":""}`,children:v.map((N)=>p(ic,{card:N,period:d,quizData:h[N.id],isRemembered:n.has(N.id),quizPassed:u.has(N.id),onQuizPass:co,onFlipChange:q},N.id))})]})]}),x("footer",{className:"mt-10 rounded-[24px] bg-white/80 border border-white p-5 text-center",children:[x("div",{className:"text-[13px] font-black text-[#444] flex items-center justify-center gap-2",children:[p("span",{className:"text-[18px]",children:"\uD83D\uDC3C"})," 穿越時空學歷史 · 熊貓博士陪你玩"]}),x("div",{className:"mt-2 text-[11px] font-bold text-[#888] leading-5 max-w-[60ch] mx-auto",children:["8個時期動畫 · 48張可愛翻卡 · 廣東話自動講古仔 · 答對自動記住 · 收集8枚時代勳章",p("br",{}),"糖果色圓角設計 · 歷史感紋樣 · 適合7-12歲小朋友"]}),x("div",{className:"mt-3 flex justify-center gap-2 text-[11px]",children:[p("span",{className:"px-3 py-1 rounded-full bg-[#FFF7CC] text-[#8a6d00] font-black",children:"\uD83C\uDF1F 兒童專屬"}),p("span",{className:"px-3 py-1 rounded-full bg-[#F0F9FF] text-[#4a6fa5] font-black",children:"\uD83C\uDFA7 廣東話"}),p("span",{className:"px-3 py-1 rounded-full bg-[#FFF0F5] text-[#a54a6f] font-black",children:"\uD83C\uDFC5 勳章收集"})]})]})]}),i&&p("div",{className:"fixed bottom-5 left-1/2 -translate-x-1/2 z-[90] px-4 py-2.5 rounded-full bg-[#2b2b2b] text-white text-[13px] font-black shadow-[0_8px_24px_rgba(0,0,0,0.25)] max-w-[90vw] text-center",children:i}),A&&p("div",{className:"fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm",children:x("div",{className:"relative w-full max-w-[420px] rounded-[28px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.25)] p-6 text-center overflow-hidden",children:[p("div",{className:"absolute inset-0 opacity-10",style:{backgroundImage:`url(${A.img})`,backgroundSize:"cover",backgroundPosition:"center"}}),p("div",{className:"absolute top-0 left-0 right-0 h-[8px]",style:{background:A.color}}),x("div",{className:"relative",children:[p("div",{className:"text-[48px] mb-2 animate-bounce",children:"\uD83C\uDF89"}),p("div",{className:"inline-flex px-3 py-1 rounded-full text-[11px] font-black text-white mb-3",style:{background:A.color},children:"時代勳章點亮"}),x("h2",{className:"font-black text-[22px] leading-tight",children:["恭喜完成【",A.name,"】！"]}),x("p",{className:"mt-2 text-[14px] font-bold text-[#555]",children:["獲得時代勳章！全部答對過關！",p("br",{}),"熊貓博士為你撒花 \uD83C\uDF8A"]}),p("div",{className:"mt-4 flex justify-center gap-2",children:[...Array(6)].map((N,T)=>p("span",{className:"text-xl animate-bounce",style:{animationDelay:`${T*0.1}s`},children:"\uD83C\uDF1F"},T))}),x("div",{className:"mt-5 grid grid-cols-2 gap-2",children:[p("button",{onClick:()=>a(null),className:"min-h-[44px] rounded-full bg-[#2b2b2b] text-white font-black text-[13px]",children:"繼續挑戰 ✊"}),p("button",{onClick:()=>{a(null);let N=A.id<8?A.id+1:A.id;t(N),window.scrollTo({top:0,behavior:"smooth"})},className:"min-h-[44px] rounded-full bg-[#ffcc33] text-[#5a3e00] font-black text-[13px]",children:"去下一個時期 \uD83D\uDE80"})]})]}),p("div",{className:"absolute inset-0 pointer-events-none overflow-hidden",children:[...Array(18)].map((N,T)=>p("span",{className:"absolute animate-bounce text-xl",style:{left:`${Math.random()*100}%`,top:`${Math.random()*80}%`,animationDelay:`${Math.random()*0.6}s`},children:["\uD83C\uDF89","✨","\uD83C\uDF8A","\uD83C\uDFC5","\uD83D\uDC3C"][T%5]},T))})]})}),P&&p("div",{className:"fixed inset-0 z-[101] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm",children:x("div",{className:"relative w-full max-w-[460px] rounded-[28px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.3)] p-7 text-center overflow-hidden",children:[p("div",{className:"absolute top-0 left-0 right-0 h-[10px] bg-gradient-to-r from-[#ffcc33] via-[#C1272D] to-[#00A8A8]"}),p("div",{className:"text-[56px] mb-2",children:"\uD83C\uDFC6"}),p("h2",{className:"font-black text-[24px] leading-tight",children:"太叻喇！你已經完成所有48個挑戰，成為小博士歷史達人！"}),x("p",{className:"mt-3 text-[13px] font-bold text-[#666] leading-6",children:["8枚時代勳章全部點亮！由遠古到AI機器人創新藥，你都答啱晒！",p("br",{}),"熊貓博士頒發最高榮譽勳章 \uD83C\uDF96️"]}),p("div",{className:"mt-4 flex flex-wrap justify-center gap-2",children:Ft.map((N)=>p("div",{className:"w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-black border-2 bg-[#ffcc33] border-[#ffcc33] text-[#5a3e00] shadow",children:"\uD83C\uDFC5"},N.id))}),p("button",{onClick:()=>j(!1),className:"mt-6 min-h-[48px] w-full rounded-full bg-gradient-to-r from-[#C1272D] to-[#ffcc33] text-white font-black text-[14px] shadow-lg",children:"\uD83C\uDF89 收下榮譽，再玩一次！"}),p("div",{className:"absolute inset-0 pointer-events-none overflow-hidden",children:[...Array(24)].map((N,T)=>p("span",{className:"absolute animate-bounce text-xl",style:{left:`${Math.random()*100}%`,top:`${Math.random()*90}%`,animationDelay:`${Math.random()}s`},children:["\uD83C\uDF89","\uD83C\uDFC6","\uD83C\uDF1F","\uD83D\uDC3C","✨","\uD83C\uDF8A"][T%6]},T))})]})})]})}sc.createRoot(document.getElementById("root")).render(p(Ac.default.StrictMode,{children:p(so,{})}));
